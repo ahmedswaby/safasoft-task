@@ -12,7 +12,7 @@ export const hash = Math.floor(Math.random() * 90000) + 10000;
 export default defineConfig({
   server: {
     https: true,
-    port: 3000,
+    port: 5000,
   },
   define: {
     "process.env": {},
@@ -47,7 +47,7 @@ export default defineConfig({
         replacement: path.resolve(__dirname, "./src/Assets"),
       },
       { find: "~/Pages", replacement: path.resolve(__dirname, "./src/Pages") },
-      { find: "~/Components", replacement: path.resolve(__dirname, "./src/Components") },
+      { find: "~/Components", replacement: path.resolve(__dirname, "./src/components") },
     ],
   },
   optimizeDeps: {
