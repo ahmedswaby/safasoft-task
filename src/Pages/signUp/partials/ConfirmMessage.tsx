@@ -1,7 +1,7 @@
 import React from 'react';
 import * as yup from "yup";
 import openMailBox from '~/Assets/icons/open-mailbox.svg'
-const Confirmation = ({nextStep , prevStep}) => {
+const Confirmation = ({ prevStep}) => {
 
     return (
         <div className="mt-20 w-full">
@@ -15,7 +15,7 @@ const Confirmation = ({nextStep , prevStep}) => {
                 </div>
                 <div className="flex w-100 justify-end my-10 w-full ">
                     <button className="btn border bg-gray-300 text-gray-500 p-2 px-4 lg:px-8  rounded-md m-4" onClick={() => prevStep()}>Previous</button>
-                    <button className="btn bg-blue-600 text-white p-8 lg:px-32 py-4 rounded-md m-4" type='button' onClick={() => nextStep()}>Next</button>
+                    <button className="btn bg-blue-600 text-white p-8 lg:px-32 py-4 rounded-md m-4" type='button'>Confirm</button>
                 </div>
             </form>
 

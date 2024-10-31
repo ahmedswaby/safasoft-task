@@ -1,4 +1,4 @@
-const MultieImages = ({ color = '#000000' }) => {
+const MultieImages = ({ color = '#909A9F' }) => {
 	return (
 		<>
 
