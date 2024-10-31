@@ -2,6 +2,8 @@ import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from '~/Pages/signUp/index'
+import { Provider } from "react-redux";
+import store from "~/API/index";
 
 
 
@@ -20,5 +22,7 @@ function App() {
 
 const root = ReactDOM.createRoot(document.getElementById("root") as Element);
 root.render(
+  <Provider store={store}>
     <App />
+  </Provider>
 );

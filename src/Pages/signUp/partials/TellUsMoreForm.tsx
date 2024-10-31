@@ -1,18 +1,51 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { TextField } from "~/Components/TextField";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { Select } from "~/Components/Select";
+import { CompanyFormData } from '~/Pages/signUp'
 
-
-const TellUsMoreForm = ({ nextStep }) => {
+const TellUsMoreForm = ({ nextStep , setData , formData }: {nextStep: Function; setData: Function; formData: CompanyFormData}) => {
 
     const validationSchema = yup.object().shape({
-        fullName: yup
+        user_full_name: yup
             .string()
-            .required("Please Enter Your Name")
+            .required("Please Enter Your Name"),
+            user_phone: yup
+            .number()
+            .typeError("Please Enter valid Phone Number")
+            .required("Please Enter Your Phone Number"),
+        user_email: yup
+            .string()
+            .nullable()
+            .matches(
+                /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                `PLease Enter Valid email`
+            )
+            .required(`Please Enter Email this is required field`),
+        user_password: yup
+            .string()
+            .required(`Please enter your password`)
+            .matches(/^(?!.*(password|Password)).*$/, {
+                message: `Please Enter valid Password`,
+                excludeEmptyString: true,
+            })
+            .matches(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).*/, {
+                message: `Please Enter valid Password`,
+                excludeEmptyString: true,
+            })
+            .matches(/^(?=.[^\u0621-\u064A]{7,15}$)^(?!.*(.)\1{3}).*/, {
+                message: `Please Enter valid Password`,
+                excludeEmptyString: true,
+            }),
+        user_password_confirmation: yup
+            .string()
+            .required(
+                `Please Enter Your Password again`
+            )
+            .oneOf([yup.ref("user_password"), null], 'Password not the same'),
     });
 
 
@@ -22,14 +55,15 @@ const TellUsMoreForm = ({ nextStep }) => {
         handleSubmit,
         control,
         reset,
-        setError,
-        clearErrors,
         formState: { errors },
-    } = useForm<{}>({ resolver: yupResolver(validationSchema) });
+    } = useForm<{}>({ resolver: yupResolver(validationSchema),   mode: 'onChange' });
+
+    useEffect(() => {
+        reset(formData);
+    }, [formData])
 
     const submitHandler = async data => {
-        console.log(data);
-
+        setData({...formData, ...data})
         nextStep()
         try {
 
@@ -46,15 +80,15 @@ const TellUsMoreForm = ({ nextStep }) => {
                         required
                         title={'Full Name'}
                         placeholder={'Enter your Full Name'}
-                        name="fullName"
+                        name="user_full_name"
                         register={register}
                         errors={errors}
                     />
                     <TextField
                         placeholder={'Enter Your business email'}
                         required
-                        title={'Business email'}
-                        name="email"
+                        title={'Business Email'}
+                        name="user_email"
                         register={register}
                         errors={errors}
                     />
@@ -76,7 +110,8 @@ const TellUsMoreForm = ({ nextStep }) => {
                             placeholder={'Enter Your Phone Number'}
                             required
                             title={'Phone Number'}
-                            name="phoneNumber"
+                            name="user_phone"
+                            pattern="[0-9]*"
                             register={register}
                             errors={errors}
                         />
@@ -85,8 +120,9 @@ const TellUsMoreForm = ({ nextStep }) => {
                         placeholder={'Choose Password'}
                         required
                         title={'password'}
-                        name="password"
+                        name="user_password"
                         type="password"
+                        autoComplete="new-password"
                         register={register}
                         errors={errors}
                     />
@@ -94,7 +130,7 @@ const TellUsMoreForm = ({ nextStep }) => {
                         placeholder={'Repeat your Password'}
                         required
                         title={'Repeat your password'}
-                        name="confirmPassword"
+                        name="user_password_confirmation"
                         type="password"
                         register={register}
                         errors={errors}
